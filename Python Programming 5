@@ -1,0 +1,95 @@
+import random
+
+# Words for different categories
+word_categories = {
+    'animals': ['lion', 'tiger', 'elephant', 'zebra', 'giraffe'],
+    'countries': ['india', 'usa', 'canada', 'japan', 'australia'],
+    'movies': ['avatar', 'titanic', 'inception', 'jaws', 'matrix']
+}
+
+# Hangman graphics
+hangman_graphics = [
+    '''
+    +---+
+        |
+        |
+        |
+       ===''',
+    '''
+    +---+
+    O   |
+        |
+        |
+       ===''',
+    '''
+    +---+
+    O   |
+    |   |
+        |
+       ===''',
+    '''
+    +---+
+    O   |
+   /|   |
+        |
+       ===''',
+    '''
+    +---+
+    O   |
+   /|\\  |
+        |
+       ===''',
+    '''
+    +---+
+    O   |
+   /|\\  |
+   /    |
+       ===''',
+    '''
+    +---+
+    O   |
+   /|\\  |
+   / \\  |
+       ==='''
+]
+
+def choose_word(category):
+    return random.choice(word_categories[category])
+
+def display_word(word, guessed_letters):
+    return ' '.join(letter if letter in guessed_letters else '_' for letter in word)
+
+def hangman():
+    category = input("Choose a category (animals, countries, movies): ").lower()
+    word = choose_word(category)
+    guessed_letters = set()
+    incorrect_guesses = 0
+
+    print("Welcome to Hangman!")
+    print(hangman_graphics[incorrect_guesses])
+    print(display_word(word, guessed_letters))
+
+    while incorrect_guesses < len(hangman_graphics) - 1:
+        guess = input("Guess a letter: ").lower()
+
+        if guess in guessed_letters:
+            print("You've already guessed that letter.")
+        elif guess in word:
+            guessed_letters.add(guess)
+            print("Good guess!")
+        else:
+            incorrect_guesses += 1
+            print("Incorrect guess!")
+            print(hangman_graphics[incorrect_guesses])
+
+        print(display_word(word, guessed_letters))
+
+        if all(letter in guessed_letters for letter in word):
+            print("Congratulations! You've guessed the word:", word)
+            break
+
+    else:
+        print("Sorry, you've run out of guesses. The word was:", word)
+
+if __name__ == "__main__":
+    hangman()
